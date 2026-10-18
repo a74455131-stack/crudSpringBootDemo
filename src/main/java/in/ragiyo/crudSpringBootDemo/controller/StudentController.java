@@ -1,0 +1,88 @@
+package in.ragiyo.crudSpringBootDemo.controller;
+
+import in.ragiyo.crudSpringBootDemo.entity.Student;
+import in.ragiyo.crudSpringBootDemo.service.StudentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/students")
+public class StudentController {
+    private StudentService studentService;
+    StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+    //create student record
+    @PostMapping("/create")
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        System.out.println("inside student controller createStudent");
+        Student createdStudent= studentService.createStudent(student);
+        System.out.println("exiting student controller createStudent");
+        return ResponseEntity
+                .status(HttpStatus.CREATED).
+                body(createdStudent);
+    }
+
+    //get student by id
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Student> getStudent(@PathVariable Long id){
+        Student studentResp= studentService.getStudent(id);
+        if(studentResp!=null){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(studentResp);
+        }
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(null);
+    }
+
+    //get all student
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Student>> getAllStudent(){
+        List<Student> studentList= studentService.getAllStudent();
+        if(!studentList.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(studentList);
+        }
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(null);
+    }
+
+    //update student by id
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable Long id,
+                                                 @RequestBody Student studentReq){
+        Student studentResp= studentService.updateStudent(id,studentReq);
+        if(studentResp!=null){
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(studentResp);
+        }
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(null);
+    }
+
+    //delete student by id
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteStudent(@PathVariable Long id){
+        Boolean isDeleted = studentService.deleteStudent(id);
+        if(!isDeleted){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Record not exit");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Record successfully deleted");
+    }
+
+}
