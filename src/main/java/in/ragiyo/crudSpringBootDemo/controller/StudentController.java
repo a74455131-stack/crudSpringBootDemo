@@ -29,8 +29,8 @@ public class StudentController {
     }
 
     //get student by id
-    @GetMapping("/get/{id}")
-    public ResponseEntity<Student> getStudent(@PathVariable Long id){
+    @GetMapping("/get")
+    public ResponseEntity<Student> getStudent(@RequestParam Long id){
         Student studentResp= studentService.getStudent(id);
         if(studentResp!=null){
             return ResponseEntity
@@ -57,8 +57,8 @@ public class StudentController {
     }
 
     //update student by id
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable Long id,
+    @PutMapping("/update")
+    public ResponseEntity<Student> updateStudent(@RequestParam Long id,
                                                  @RequestBody Student studentReq){
         Student studentResp= studentService.updateStudent(id,studentReq);
         if(studentResp!=null){
@@ -72,8 +72,8 @@ public class StudentController {
     }
 
     //delete student by id
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable Long id){
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteStudent(@RequestParam Long id){
         Boolean isDeleted = studentService.deleteStudent(id);
         if(!isDeleted){
             return ResponseEntity
@@ -84,5 +84,20 @@ public class StudentController {
                 .status(HttpStatus.OK)
                 .body("Record successfully deleted");
     }
+
+    //delete student softly
+    @PatchMapping("/delete-softly")
+    public ResponseEntity<String> deleteStudentSoftly(@RequestParam Long id){
+        Boolean isDeleted = studentService.deleteStudentSoftly(id);
+        if(!isDeleted){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Record not exit");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Record successfully soft deleted");
+    }
+
 
 }

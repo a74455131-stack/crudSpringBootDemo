@@ -1,12 +1,15 @@
 package in.ragiyo.crudSpringBootDemo.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Student {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -14,6 +17,7 @@ public class Student {
     private String email;
     private int roll_no;
     private String subject;
+    private boolean deleted;
 
     public Long getId() {
         return id;
@@ -47,19 +51,27 @@ public class Student {
         this.email = email;
     }
 
-    public int getRollNo() {
-        return roll_no;
-    }
-
-    public void setRollNo(int roll_no) {
-        this.roll_no = roll_no;
-    }
-
     public String getSubject() {
         return subject;
     }
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public int getRoll_no() {
+        return roll_no;
+    }
+
+    public void setRoll_no(int roll_no) {
+        this.roll_no = roll_no;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
